@@ -16,7 +16,7 @@
 
 #define PORTA_DATA	(*((volatile uint32*) 0x400043FC))
 #define PORTA_DIR		(*((volatile uint32*) 0x40004400))
-	
+#define PORTA_DEN		(*((volatile uint32*) 0x4000451C))
 
 #define PORTB_DATA 	(*((volatile uint32*) 0x400053FC))
 #define PORTB_DIR		(*((volatile uint32*) 0x40005400))

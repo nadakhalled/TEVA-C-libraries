@@ -31,5 +31,9 @@
 /* Check if a specific bit is cleared in any register and return true if yes */
 #define BIT_IS_CLEAR(REG,BIT) ( !(REG & (1<<BIT)) )
 
+
+/*Returns the contents of a register by adding the address and offset*/
+#define ACCESS_REG(BASE,OFFSET) (*((volatile uint32 *)(BASE+OFFSET)) )
+	
 #endif
 
