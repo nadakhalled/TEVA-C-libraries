@@ -49,31 +49,101 @@ void GPIO_enablePortClock(uint32 port)
 }
 
 
+static void GPIO_setPinDrive(uint32 port, uint8 pin,GPIO_pinCurrentDrive drive)
+{
+	switch (drive)
+	{
+		case DRIVE_2mA:
+		{
+			SET_BIT(ACCESS_REG(port,GPIO_DR2R_OFFSET),pin);
+			break;
+		}
+		case DRIVE_4mA:
+		{
+			SET_BIT(ACCESS_REG(port,GPIO_DR4R_OFFSET),pin);
+			break;
+		}
+		case DRIVE_8mA:
+		{
+			SET_BIT(ACCESS_REG(port,GPIO_DR8R_OFFSET),pin);
+			break;
+		}
+	}
+}
+
+static void unlockPort(uint32 port,uint8 pin)
+{
+	WRITE_TO_REG(port,GPIO_LOCKR_OFFSET,GPIO_UNLOCK);
+	SET_BIT(ACCESS_REG(port,GPIO_COMMITR_OFFSET), pin);
+}
+
+
+static void lockPort(uint32 port,uint8 pin)
+{
+	CLEAR_BIT(ACCESS_REG(port,GPIO_COMMITR_OFFSET), pin);
+	WRITE_TO_REG(port,GPIO_LOCKR_OFFSET,0);
+}
+
+
+static void configureInputPin(uint32 port,uint8 pin,GPIO_pinConfig* configuration)
+{
+	/*setting pull up register status*/
+	if(configuration->internalResistance==PULLUP)
+		SET_BIT(ACCESS_REG(port,GPIO_PUR_OFFSET),pin);
+	else if(configuration->internalResistance==PULLDOWN)
+		SET_BIT(ACCESS_REG(port,GPIO_PDR_OFFSET),pin);
+
+	/*Checking if pin trigger ADC or uDMA*/
+	if(configuration->pinTrigger==ADC)
+		SET_BIT(ACCESS_REG(port,GPIO_ADCCTLR_OFFSET),pin);
+	else if(configuration->pinTrigger==uDMA)
+		SET_BIT(ACCESS_REG(port,GPIO_DMACTLR_OFFSET),pin);
+}
+
+
+static void configureOutputPin(uint32 port, uint8 pin,GPIO_pinConfig* configuration)
+{
+	/*Check if outputdrain is enabled*/
+	if(configuration->outputConfig==OPENDRAIN_ENABLED)
+		SET_BIT(ACCESS_REG(port,GPIO_ODR_OFFSET),pin);
+
+	/*Output Drive */
+	if(configuration->currentDrive)
+		GPIO_setPinDrive(port,pin,configuration->currentDrive);
+}
+
+
 void GPIO_intializePin(GPIO_pinConfig* configuration,uint32 port,uint8 pin)
 {
+	/*Unlocking Port register*/
+	unlockPort(port,pin);
+
 	/*Setting pin direction*/
 	/*Output pin*/
 	if(configuration->direction)
 	{
 		SET_BIT(ACCESS_REG(port,GPIO_DIRR_OFFSET), pin);
-
-		if(configuration->outputConfig==OPENDRAIN_ENABLED)
-			SET_BIT(ACCESS_REG(port,GPIO_ODR_OFFSET),pin);
+		configureOutputPin(port,pin,configuration);
 	}
+
 	/*Input pin*/
 	else
 	{
 		CLEAR_BIT(ACCESS_REG(port,GPIO_DIRR_OFFSET), pin);
-		/*setting pull up register status*/
-		if(configuration->internalResistance==PULLUP)
-			SET_BIT(ACCESS_REG(port,GPIO_PUR_OFFSET),pin);
-		else if(configuration->internalResistance==PULLDOWN)
-			SET_BIT(ACCESS_REG(port,GPIO_PDR_OFFSET),pin);
+		configureInputPin(port,pin,configuration);
 	}
 	
+	/*Alternate function select*/
+	if(configuration->pinFunction==PERIPHERAL)
+		SET_BIT(ACCESS_REG(port,GPIO_AFSELR_OFFSET),pin);
+
 	/*Digital enable*/
 	if(configuration->digitalEnable)
 		SET_BIT(ACCESS_REG(port,GPIO_DENR_OFFSET), pin);
+	else
+		SET_BIT(ACCESS_REG(port,GPIO_AMSEL_OFFSET), pin);
+
+	lockPort(port,pin);
 }
 /*
 void GPIO_configureInterruptPin(,uint32 port,uint8 pin)
