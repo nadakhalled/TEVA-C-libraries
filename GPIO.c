@@ -112,6 +112,27 @@ static void configureOutputPin(uint32 port, uint8 pin,GPIO_pinConfig* configurat
 		GPIO_setPinDrive(port,pin,configuration->currentDrive);
 }
 
+static void GPIO_configureInterruptPin(GPIO_interruptConfig* interruptConfig,uint32 port,uint8 pin)
+{	
+	//masking interrupt bit to prevent false interrupts
+	CLEAR_BIT(ACCESS_REG(port,GPIO_IMR_OFFSET),pin);
+
+	if(interruptConfig->sense==LEVEL_TRIGGER)
+		SET_BIT(ACCESS_REG(port,GPIO_ISR_OFFSET),pin);
+	
+	/*Setting interrupt trigger*/
+	if(interruptConfig->trigger==BOTH_EDGES)
+		SET_BIT(ACCESS_REG(port,GPIO_IBER_OFFSET),pin);
+	else if(interruptConfig->trigger==RISING_EDGE)
+		SET_BIT(ACCESS_REG(port,GPIO_IEVR_OFFSET),pin);
+	else
+		CLEAR_BIT(ACCESS_REG(port,GPIO_IEVR_OFFSET),pin);
+
+	
+	//unmasking interrupt bit after finishing the config
+	SET_BIT(ACCESS_REG(port,GPIO_IMR_OFFSET),pin);
+}
+
 
 void GPIO_intializePin(GPIO_pinConfig* configuration,uint32 port,uint8 pin)
 {
@@ -143,16 +164,15 @@ void GPIO_intializePin(GPIO_pinConfig* configuration,uint32 port,uint8 pin)
 	else
 		SET_BIT(ACCESS_REG(port,GPIO_AMSEL_OFFSET), pin);
 
+	/*interrup configuration*/
+	if(configuration->interruptEnable)
+		GPIO_configureInterruptPin(&(configuration->interruptConfig),port,pin);
+
 	lockPort(port,pin);
 }
-/*
-void GPIO_configureInterruptPin(,uint32 port,uint8 pin)
+
+
+void GPIO_clearInterrupt(uint32 port,uint8 pin)
 {
-1-Mask IM bit
-2- set IBE
-3- set IS
-4-set
-	CLEAR_BIT(ACCESS_REG(port,INTERRUP_MASK_REG_OFFSET),pin);
-	
+	SET_BIT(ACCESS_REG(port,GPIO_ICR_OFFSET),pin);
 }
-*/

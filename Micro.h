@@ -21,11 +21,11 @@
 #define PORTA		0x40004000
 #define PORTB 		0x40005000
 #define PORTC 		0x40006000
-#define PORTD			0x40007000
+#define PORTD		0x40007000
 #define PORTE 		0x40024000
 #define PORTF 		0x40025000
 
-/* Ports registers offsets */
+/* GPIO registers offsets */
 #define GPIO_DATAR_OFFSET		0x3FC
 #define GPIO_LOCKR_OFFSET       0x520
 #define GPIO_COMMITR_OFFSET     0x524
@@ -46,13 +46,18 @@
 #define GPIO_ADCCTLR_OFFSET     0x530
 #define GPIO_DMACTLR_OFFSET     0x534
 
+/*Interrupt registers*/ 
+#define GPIO_ISR_OFFSET         0x404
+#define GPIO_IBER_OFFSET        0x408
+#define GPIO_IEVR_OFFSET        0x40C
+#define GPIO_IMR_OFFSET         0x410
 
-/*					
-#define AMSEL_REG_OFFSET
-#define INTERRUPT_SENSE_REG_OFFSET	0x404
-#define INTERRUPT_BOTH_EDGES_REG_OFFSET	
-#define INTERRUP_MASK_REG_OFFSET		
-*/
+#define GPIO_RISR_OFFSET         0x414
+#define GPIO_MISR_OFFSET         0x418
+
+#define GPIO_ICR_OFFSET          0x41C
+
+
 
 
 #endif /*__MICRO__H__ */

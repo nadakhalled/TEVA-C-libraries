@@ -15,7 +15,8 @@
 
 #define GPIO_UNLOCK		0x4C4F434B
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*Type declerations */
 /*Enum that describes direction of the pin */
 typedef enum{INPUT,OUTPUT} GPIO_pinDirection;
 
@@ -38,17 +39,27 @@ typedef enum {NO_DRIVE=0,DRIVE_2mA=1, DRIVE_4mA=2,DRIVE_8mA=3} GPIO_pinCurrentDr
 typedef enum {NO_TRIGGER,ADC,uDMA} GPIO_pinTrigger;
 
 /*Interrupt */
+/*Enum that states if the interrupt of a pin is enabled*/
+typedef enum {DISABLE_INTERRUPT,ENABLE_INTERRUPT} GPIO_interruptEnable;
+
+/*Enum that describes interrupt sense */
 typedef enum{EDGE_TRIGGERED,LEVEL_TRIGGER} GPIO_interruptSense;
 
-typedef enum {ONE_EDGE,BOTH_EDGES} GPIO_interruptBothEdges;
+/*Enum that describes the trigger of the interrupt pin*/
+typedef enum {BOTH_EDGES,FALLING_EDGE,RISING_EDGE} GPIO_interruptTrigger;
 
-typedef enum {FALLING_EDGE,RISING_EDGE} GPIO_interruptTrigger;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*Struct describing the configuration of the enum*/
+typedef struct 
+{
+	GPIO_interruptSense sense;
+	GPIO_interruptTrigger trigger;
 
+} GPIO_interruptConfig;
 
 /*Struct that describes the configuration of a GPIO pin */
 typedef struct 
 {
-
 	GPIO_pinDirection direction;
 	GPIO_pinFunction pinFunction;
 	GPIO_pinDigitalEnable digitalEnable;
@@ -56,6 +67,8 @@ typedef struct
 	GPIO_outputConfig outputConfig;
 	GPIO_pinCurrentDrive currentDrive;
 	GPIO_pinTrigger pinTrigger;
+	GPIO_interruptEnable interruptEnable;
+	GPIO_interruptConfig interruptConfig;
 
 }GPIO_pinConfig;
 
@@ -63,11 +76,10 @@ typedef struct
 /*Struct that describes the configuration of an interrupt pin */
 typedef struct{
 	GPIO_interruptSense interruptSense;
-	GPIO_interruptBothEdges interruptBothEdges;
 	GPIO_interruptTrigger interruptTrigger;
 } GPIO_interruptPinConfig;
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*FUNCTION DECLERATION*/
 /*
 Function that enables GPIO port clock so that pins can be used
@@ -84,4 +96,10 @@ params:
 */
 void GPIO_intializePin(GPIO_pinConfig *configuration,uint32 port,uint8 pin);
 
+/* Function that clears the interrupt Mask interrupt status and raw interrupt status by setting ICR bit
+params:
+	-port: port of the interrupt pin
+	-pin: the interrupt pin
+*/
+void GPIO_clearInterrupt(uint32 port,uint8 pin);
 #endif /*__GPIO__H*/
