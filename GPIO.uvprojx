@@ -384,11 +384,6 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>Micro,h.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Micro,h.h</FilePath>
-            </File>
-            <File>
               <FileName>GPIO.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\GPIO.c</FilePath>
@@ -427,6 +422,16 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>NVIC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\NVIC.c</FilePath>
+            </File>
+            <File>
+              <FileName>NVIC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\NVIC.h</FilePath>
             </File>
           </Files>
         </Group>
