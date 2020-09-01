@@ -11,8 +11,8 @@
  #include "GPIO.h"
  #include "delay.h"
 
-#define LED			2
-#define SWITCH	   4
+ #define LED			2
+ #define SWITCH	   4
 
  static GPIO_pinConfig ledPinConfig={OUTPUT,GPIO,DIGITAL,NO_RES,OPENDRAIN_DISABLED,NO_DRIVE,NO_TRIGGER};
  static GPIO_pinConfig switchConfig={INPUT,GPIO,DIGITAL,PULLUP,OPENDRAIN_DISABLED,NO_DRIVE,NO_TRIGGER};
