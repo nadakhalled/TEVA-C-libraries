@@ -73,7 +73,7 @@ static void GPIO_setPinDrive(uint32 port, uint8 pin,GPIO_pinCurrentDrive drive)
 
 static void unlockPort(uint32 port,uint8 pin)
 {
-	*((volatile uint32*)GPIO_LOCKR_OFFSET+port)=GPIO_UNLOCK;
+	WRITE_TO_REG(port,GPIO_LOCKR_OFFSET,GPIO_UNLOCK);
 	SET_BIT(ACCESS_REG(port,GPIO_COMMITR_OFFSET), pin);
 }
 
