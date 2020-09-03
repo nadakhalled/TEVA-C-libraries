@@ -26,9 +26,9 @@ void NVIC_disableGlobalIrq()
 static void NVIC_changeRegState(NVIC_interruptState state,uint32 enablePort,uint32 disablePort,uint8 pin)
 {
     if(state)
-        SET_BIT(enablePort,pin);
+        SET_BIT(ACCESS_REG(enablePort,0),pin);
     else
-        SET_BIT(disablePort,pin);
+        SET_BIT(ACCESS_REG(disablePort,0),pin);
 
 }
 

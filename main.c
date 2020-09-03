@@ -45,9 +45,15 @@
       blinkLed(LED);
  }
 
- 
+ /*
+ Function to handle portF interrupt connected to PORTF
+ delay use in interrupt just for testing purpose
+ params:
+    -led: pinNumber
+ */
 void GPIOF_Handler(void)
 {
+  CLEAR_BIT(ACCESS_REG(PORTF,GPIO_DATAR_OFFSET),LED);
   for(int i=0;i<3;i++)
     blinkLed(INTERRUPT_LED);
   
@@ -63,7 +69,7 @@ void GPIOF_Handler(void)
  {
 	SET_BIT(ACCESS_REG(PORTF,GPIO_DATAR_OFFSET),led);
    delayMs(500);
-   CLEAR_BIT(ACCESS_REG(PORTF,GPIO_DATAR_OFFSET),led);
+  CLEAR_BIT(ACCESS_REG(PORTF,GPIO_DATAR_OFFSET),led);
 	  delayMs(500);
  }
 
