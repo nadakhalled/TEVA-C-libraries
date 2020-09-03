@@ -35,7 +35,7 @@
 #define ACCESS_REG(BASE,OFFSET) (*((volatile uint32 *)(BASE+OFFSET)) )
 
 /*Changes the content of a register*/
-#define WRITE_TO_REG(BASE,OFFSET,VALUE) (*((volatile uint32 *)(BASE+OFFSET))=VALUE)
+#define WRITE_TO_REG(BASE,OFFSET,VALUE) ((*((volatile uint32 *)(BASE+OFFSET))=(VALUE)))
 	
 #endif
 

@@ -13,13 +13,13 @@ typedef enum { DISABLE,ENABLE} NVIC_interruptState;
 
 void NVIC_enableGlobalIrq()
 {
-    __enable_irq();
+    __asm(" CPSIE i");
 }
 
 
 void NVIC_disableGlobalIrq()
 {
-    __disable_irq();
+    __asm(" CPSID i");
 }
 
 
