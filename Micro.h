@@ -18,7 +18,7 @@
 #define GPIO_CLOCK_ENABLE   (*((volatile uint32*) 0x400FE608))
 
                  
-/*NVIC registers*/
+/*NVIC registers addresses*/
 #define NVIC_EN0    0xE000E100
 #define NVIC_EN1    0xE000E104
 #define NVIC_EN2    0xE000E108
@@ -32,7 +32,13 @@
 #define NVIC_DIS4   0xE000E190
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-/* Ports Base addreses */
+/* SysTick registers */
+#define STCTRL     (*((volatile uint32*) 0xE000E010)) 
+#define STRELOAD   (*((volatile uint32*) 0xE000E014))
+#define STCURRENT  (*((volatile uint32*) 0xE000E018))
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Ports Base addresses */
 #define PORTA		0x40004000
 #define PORTB 		0x40005000
 #define PORTC 		0x40006000
