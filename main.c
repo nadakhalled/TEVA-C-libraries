@@ -11,7 +11,8 @@
  #include "GPIO.h"
  #include "NVIC.h"
  #include "delay.h"
-
+ #include "SysTick.h"
+ 
  #define LED			           2
  #define INTERRUPT_LED       3
  #define SWITCH	             4
@@ -21,35 +22,55 @@
  static GPIO_pinConfig switchConfig={INPUT,GPIO,DIGITAL,PULLUP,OPENDRAIN_DISABLED,NO_DRIVE,NO_TRIGGER,DISABLE_INTERRUPT,{0,0}};
  static GPIO_pinConfig interruptSwitchConfig={INPUT,GPIO,DIGITAL,PULLUP,OPENDRAIN_DISABLED,NO_DRIVE,NO_TRIGGER,
 		ENABLE_INTERRUPT,{EDGE_TRIGGERED,FALLING_EDGE}};
- 
+ static SYSTICK_config sysTickConfig={SYSTEM_CLOCK,INTERRUPT_ENABLED};
  void blinkLed(uint8 pin);
  void lightLedWithSwitch(uint8 led, uint8 button);
  void GPIOF_Handler(void);
+ void SysTick_Handler(void);
+ void testInterrupt();
  
  int main()
  {
      /*Intializing GPIO clock for all ports*/
     GPIO_enablePortClock(PORTF);
-	  GPIO_intializePin(&switchConfig,PORTF,SWITCH);
-    GPIO_intializePin(&interruptSwitchConfig,PORTF,INTERRUPT_SWITCH);
-
     GPIO_intializePin(&ledPinConfig,PORTF,LED);
-    GPIO_intializePin(&ledPinConfig,PORTF,INTERRUPT_LED);
+    
 
     /*Enabling global Interrupt & PortF interrupt*/
     NVIC_enableGlobalIrq();
-    NVIC_enableIRQ(INT_GPIOF);
-
-
-    while(1)
+    NVIC_enableIRQ(INT_SYSCTL);
+	 
+	 /*Enabling SysTick*/
+	 SYSTICK_setReloadValue(0xFFFFFF);
+	 SYSTICK_intialize(&sysTickConfig);
+	 
+	 while(1);
+	 
+	 
+ }
+ 
+ void testInterrupt()
+ {
+		GPIO_intializePin(&switchConfig,PORTF,SWITCH);
+    GPIO_intializePin(&interruptSwitchConfig,PORTF,INTERRUPT_SWITCH);
+		GPIO_intializePin(&ledPinConfig,PORTF,INTERRUPT_LED);
+	 
+	 while(1)
       blinkLed(LED);
  }
+
+/*
+ Function to handle Systick interrupt
+ delay use in interrupt just for testing purpose
+ */
+void SysTick_Handler(void)
+{
+  blinkLed(LED);
+}
 
  /*
  Function to handle portF interrupt connected to PORTF
  delay use in interrupt just for testing purpose
- params:
-    -led: pinNumber
  */
 void GPIOF_Handler(void)
 {
