@@ -100,10 +100,10 @@ typedef enum
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Function declerations*/
 
-/*Function that enables the global interrupt through CMSIS*/
+/*Function that enables the global interrupt using inline assembly*/
 void NVIC_enableGlobalIrq();
 
-/*Function that disables the global interrupt through CMSIS*/
+/*Function that disables the global interrupt using inline assembly*/
 void NVIC_disableGlobalIrq();
 
 /*Functions that enables one of the interrupts
