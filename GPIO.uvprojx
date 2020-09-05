@@ -434,16 +434,6 @@
               <FilePath>.\NVIC.h</FilePath>
             </File>
             <File>
-              <FileName>Timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>Timer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Timer.h</FilePath>
-            </File>
-            <File>
               <FileName>SysTick.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\SysTick.c</FilePath>
@@ -452,6 +442,16 @@
               <FileName>SysTick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\SysTick.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPTM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\GPTM.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPTM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\GPTM.h</FilePath>
             </File>
           </Files>
         </Group>

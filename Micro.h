@@ -14,10 +14,11 @@
 #include "std_types.h"
 #include "common_macros.h"
 
+/*System Control registers*/
+#define GPIO_CLOCK_ENABLE      (*((volatile uint32*) 0x400FE608))
+#define RCGC_TIMER             (*((volatile uint32*) 0x400FE608))
 
-#define GPIO_CLOCK_ENABLE   (*((volatile uint32*) 0x400FE608))
-
-                 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////                 
 /*NVIC registers addresses*/
 #define NVIC_EN0    0xE000E100
 #define NVIC_EN1    0xE000E104
@@ -77,6 +78,25 @@
 #define GPIO_MISR_OFFSET         0x418
 
 #define GPIO_ICR_OFFSET          0x41C
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*Timers Base addresses*/
+/*16/32 bit timers*/
+#define TIMER0_32     0x40030000
+#define TIMER1_32     0x40031000
+#define TIMER2_32     0x40032000
+#define TIMER3_32     0x40033000
+#define TIMER4_32     0x40034000
+#define TIMER5_32     0x40035000
+
+/*Timer registers offsets*/
+#define GPTM_CFG    0x000
+#define GPTM_TAMR   0x004
+#define GPTM_CTL    0x00C
+#define GPTM_IMR    0x018
+#define GPTM_RIS    0x01C
+#define GPTM_ICR    0x024
+#define GPTM_TAILR  0x028
+
 
 #endif /*__MICRO__H__ */
