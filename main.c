@@ -12,6 +12,8 @@
  #include "NVIC.h"
  #include "delay.h"
  #include "SysTick.h"
+ #include "GPTM.h"
+ 
  
  #define LED			           2
  #define INTERRUPT_LED       3
@@ -23,6 +25,9 @@
  static GPIO_pinConfig interruptSwitchConfig={INPUT,GPIO,DIGITAL,PULLUP,OPENDRAIN_DISABLED,NO_DRIVE,NO_TRIGGER,
 		ENABLE_INTERRUPT,{EDGE_TRIGGERED,FALLING_EDGE}};
  static SYSTICK_config sysTickConfig={SYSTEM_CLOCK,INTERRUPT_ENABLED};
+ static GPTM_periodicTimerConfig timerConfig={DOWN_COUNTER,TRIGGER_DISABLED,TIMER_MATCH_DISABLED,TIMERA_TIMEOUT,0xFFFFFFFF};
+
+
  void blinkLed(uint8 pin);
  void lightLedWithSwitch(uint8 led, uint8 button);
  void GPIOF_Handler(void);
@@ -34,21 +39,28 @@
      /*Intializing GPIO clock for all ports*/
     GPIO_enablePortClock(PORTF);
     GPIO_intializePin(&ledPinConfig,PORTF,LED);
-    
+	 
+ }
+ 
+  void testTimerAInterrupt()
+  {
+    GPTM_enableTimerClock(TIMER_0);
+    GPTM_enableTimerAPeriodicMode(TIMER_0,&timerConfig);
+  }
 
-    /*Enabling global Interrupt & PortF interrupt*/
+ void testSystick()
+ {
+   /*Enabling global Interrupt & sysTick interrupt*/
     NVIC_enableGlobalIrq();
     NVIC_enableIRQ(INT_SYSCTL);
 	 
 	 /*Enabling SysTick*/
 	 SYSTICK_setReloadValue(0xFFFFFF);
 	 SYSTICK_intialize(&sysTickConfig);
-	 
-	 while(1);
-	 
-	 
+
+   while(1);
  }
- 
+
  void testInterrupt()
  {
 		GPIO_intializePin(&switchConfig,PORTF,SWITCH);
@@ -58,6 +70,12 @@
 	 while(1)
       blinkLed(LED);
  }
+
+void TIMER0A_Handler()
+{
+  blinkLed(LED);
+  GPTM_clearTimerInterrupt(TIMER_0,TIMERA_TIMEOUT);
+}
 
 /*
  Function to handle Systick interrupt
