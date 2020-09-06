@@ -33,19 +33,26 @@
  void GPIOF_Handler(void);
  void SysTick_Handler(void);
  void testInterrupt();
+ void testTimerAInterrupt();
+ void testSystick();
+ void TIMER0A_Handler(void);
+
  
  int main()
  {
      /*Intializing GPIO clock for all ports*/
     GPIO_enablePortClock(PORTF);
     GPIO_intializePin(&ledPinConfig,PORTF,LED);
-	 
+
+    testInterrupt();
+
+	 //while(1);
  }
  
   void testTimerAInterrupt()
   {
-    GPTM_enableTimerClock(TIMER_0);
-    GPTM_enableTimerAPeriodicMode(TIMER_0,&timerConfig);
+    GPTM_enableTimerClock(TIMER0);
+    GPTM_enableTimerAPeriodicMode(TIMER0,&timerConfig);
   }
 
  void testSystick()
@@ -64,17 +71,17 @@
  void testInterrupt()
  {
 		GPIO_intializePin(&switchConfig,PORTF,SWITCH);
-    GPIO_intializePin(&interruptSwitchConfig,PORTF,INTERRUPT_SWITCH);
+		GPIO_intializePin(&interruptSwitchConfig,PORTF,INTERRUPT_SWITCH);
 		GPIO_intializePin(&ledPinConfig,PORTF,INTERRUPT_LED);
 	 
 	 while(1)
       blinkLed(LED);
  }
 
-void TIMER0A_Handler()
+void TIMER0A_Handler(void)
 {
   blinkLed(LED);
-  GPTM_clearTimerInterrupt(TIMER_0,TIMERA_TIMEOUT);
+  GPTM_clearTimerInterrupt(TIMER0,TIMERA_TIMEOUT);
 }
 
 /*
@@ -93,7 +100,8 @@ void SysTick_Handler(void)
 void GPIOF_Handler(void)
 {
   CLEAR_BIT(ACCESS_REG(PORTF,GPIO_DATAR_OFFSET),LED);
-  for(int i=0;i<3;i++)
+  int i;
+  for(i=0;i<3;i++)
     blinkLed(INTERRUPT_LED);
   
   GPIO_clearInterrupt(PORTF,INTERRUPT_SWITCH);

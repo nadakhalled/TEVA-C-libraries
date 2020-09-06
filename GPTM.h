@@ -63,6 +63,6 @@ params:
     -timer: address of required timer.
     -interrupt: interrupt to be cleared.
 */
-void GPTM_clearTimerInterrupt(uint32 timer,GPTM_interruptType interrupt);
+void GPTM_clearTimerInterrupt(uint32 timer,GPTM_interruptType interruptType);
 
  #endif /*__GPTM__ */

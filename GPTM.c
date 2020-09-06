@@ -72,7 +72,7 @@
      SET_BIT(ACCESS_REG(timer,GPTM_CTL),0);
  }
 
- void GPTM_clearTimerInterrupt(uint32 timer,GPTM_interruptType interrupt)
+ void GPTM_clearTimerInterrupt(uint32 timer,GPTM_interruptType interruptType)
  {
-     CLEAR_BIT(ACCESS_REG(timer,GPTM_ICR),interrupt);
+     CLEAR_BIT(ACCESS_REG(timer,GPTM_ICR),interruptType);
  }
