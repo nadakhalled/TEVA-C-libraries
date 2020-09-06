@@ -11,7 +11,7 @@
  #ifndef __GPTM__
  #define __GPTM__
 
- #include "Micrp.h"
+ #include "Micro.h"
 
 /*Enum that states the mode of the timer*/
 typedef enum{ONE_SHOT_MODE=1,PERIODIC_MODE=2,CAPTURE_MODE=3} GPTM_timerMode;
@@ -20,7 +20,7 @@ typedef enum{ONE_SHOT_MODE=1,PERIODIC_MODE=2,CAPTURE_MODE=3} GPTM_timerMode;
 typedef enum{DOWN_COUNTER,UP_COUNTER} GPTM_countDirection;
 
 /*Enum that stateswhether the timer waits for a trigger to operate or not*/
-typedef enum{NO_TRIGGER,WAIT_TRIGGER} GPTM_trigger;
+typedef enum{TRIGGER_DISABLED,WAIT_TRIGGER} GPTM_trigger;
 
 /*Enum that states whether the timer match is enabled or not*/
 typedef enum{TIMER_MATCH_DISABLED,TIMER_MATCH_ENABLED} GPTM_timerMatchEnable;
@@ -34,7 +34,7 @@ typedef enum{NO_INTERRUPT=-1,TIMERA_TIMEOUT=0,TIMERA_CAPTURE_MODE_MATCH=1,TIMERA
 typedef struct {
     GPTM_countDirection countDirection;
     GPTM_trigger trigger;
-    GPTM_timerMatchEnable timmerMatchEnable;
+    GPTM_timerMatchEnable timerMatchEnable;
     GPTM_interruptType interruptType;
     uint32 intervalLoad;
 } GPTM_periodicTimerConfig;

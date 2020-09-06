@@ -82,12 +82,12 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Timers Base addresses*/
 /*16/32 bit timers*/
-#define TIMER0_32     0x40030000
-#define TIMER1_32     0x40031000
-#define TIMER2_32     0x40032000
-#define TIMER3_32     0x40033000
-#define TIMER4_32     0x40034000
-#define TIMER5_32     0x40035000
+#define TIMER0     0x40030000
+#define TIMER1     0x40031000
+#define TIMER2     0x40032000
+#define TIMER3     0x40033000
+#define TIMER4     0x40034000
+#define TIMER5     0x40035000
 
 /*Timer registers offsets*/
 #define GPTM_CFG    0x000

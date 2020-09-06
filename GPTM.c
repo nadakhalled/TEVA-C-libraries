@@ -8,9 +8,11 @@
  *
  *******************************************************************************/
 
+#include "GPTM.h"
+
  void GPTM_enableTimerClock(uint32 timer)
  {
-     switch(timer):
+     switch(timer)
      {
          case TIMER0:
          {
@@ -51,8 +53,8 @@
      /*Disabling TimerA before config*/
      CLEAR_BIT(ACCESS_REG(timer,GPTM_CTL),0);
 
-     /*16 bit timer configuration*/
-     WRITE_TO_REG(timer,GPTM_CFG,0x4);
+     /*32 bit timer configuration*/
+     WRITE_TO_REG(timer,GPTM_CFG,0x0);
 
      /*TimerA config*/
      WRITE_TO_REG(timer,GPTM_TAMR,PERIODIC_MODE);
@@ -72,5 +74,5 @@
 
  void GPTM_clearTimerInterrupt(uint32 timer,GPTM_interruptType interrupt)
  {
-     CLEAR_BIT(ACCESS_REG(timer,GPTM_ICR),interruptType);
+     CLEAR_BIT(ACCESS_REG(timer,GPTM_ICR),interrupt);
  }
