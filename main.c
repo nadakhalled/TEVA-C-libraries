@@ -24,7 +24,7 @@
  static GPIO_pinConfig switchConfig={INPUT,GPIO,DIGITAL,PULLUP,OPENDRAIN_DISABLED,NO_DRIVE,NO_TRIGGER,DISABLE_INTERRUPT,{0,0}};
  static GPIO_pinConfig interruptSwitchConfig={INPUT,GPIO,DIGITAL,PULLUP,OPENDRAIN_DISABLED,NO_DRIVE,NO_TRIGGER,
 		ENABLE_INTERRUPT,{EDGE_TRIGGERED,FALLING_EDGE}};
- static SYSTICK_config sysTickConfig={SYSTEM_CLOCK,INTERRUPT_ENABLED};
+ static SYSTICK_config sysTickConfig={SYSTEM_CLOCK,INTERRUPT_DISBALED};
  static GPTM_periodicTimerConfig timerConfig={DOWN_COUNTER,TRIGGER_DISABLED,TIMER_MATCH_DISABLED,TIMERA_TIMEOUT,0xFFFFFFFF};
 
 
@@ -44,15 +44,15 @@
     GPIO_enablePortClock(PORTF);
     GPIO_intializePin(&ledPinConfig,PORTF,LED);
 
-    testInterrupt();
+    testTimerAInterrupt();
 
-	 //while(1);
  }
  
   void testTimerAInterrupt()
   {
     GPTM_enableTimerClock(TIMER0);
     GPTM_enableTimerAPeriodicMode(TIMER0,&timerConfig);
+    while(1);
   }
 
  void testSystick()
@@ -65,7 +65,11 @@
 	 SYSTICK_setReloadValue(0xFFFFFF);
 	 SYSTICK_intialize(&sysTickConfig);
 
-   while(1);
+   while(1)
+   {
+       if(SYSTICK_checkUnderflow())
+           blinkLed(LED);
+   }
  }
 
  void testInterrupt()
@@ -73,6 +77,9 @@
 		GPIO_intializePin(&switchConfig,PORTF,SWITCH);
 		GPIO_intializePin(&interruptSwitchConfig,PORTF,INTERRUPT_SWITCH);
 		GPIO_intializePin(&ledPinConfig,PORTF,INTERRUPT_LED);
+
+		NVIC_enableGlobalIrq();
+		NVIC_enableIRQ(INT_GPIOF);
 	 
 	 while(1)
       blinkLed(LED);

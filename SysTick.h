@@ -51,4 +51,3 @@ bool SYSTICK_checkUnderflow();
 void SYSTICK_setReloadValue(uint32 reloadValue);
 
  #endif /*__SYSTICK__*/
- 

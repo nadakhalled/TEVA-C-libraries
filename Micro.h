@@ -16,7 +16,7 @@
 
 /*System Control registers*/
 #define GPIO_CLOCK_ENABLE      (*((volatile uint32*) 0x400FE608))
-#define RCGC_TIMER             (*((volatile uint32*) 0x400FE608))
+#define RCGC_TIMER             (*((volatile uint32*) 0x400FE604))
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////                 
 /*NVIC registers addresses*/
